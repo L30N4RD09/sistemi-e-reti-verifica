@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Dispensa interattiva di Sistemi e Reti: indirizzi IP, subnetting, routing statico e dinamico, configurazione router, reti wireless ed esercizi svolti.">
+<title>Sistemi e Reti — Guida alla verifica</title>
+<style>
+:root {
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --ink: #16233a;
+  --muted: #5f6f88;
+  --line: #dbe4f0;
+  --accent: #0f766e;
+  --accent-2: #2563eb;
+  --accent-soft: #e7f5f2;
+  --warn: #b45309;
+  --warn-soft: #fff5e6;
+  --nav: #101d33;
+  --nav-ink: #c9d6ea;
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(22, 35, 58, .07);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.65; }
+#progress { position: fixed; top: 0; left: 0; height: 4px; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); z-index: 60; transition: width .1s linear; }
+.topbar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 14px; padding: 12px 26px; background: rgba(255,255,255,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.3px; }
+.brand .logo { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); font-size: 18px; }
+.brand small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); letter-spacing: .4px; text-transform: uppercase; }
+.topbar .spacer { flex: 1; }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 9px; padding: 8px 13px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: #0b5f58; color: #fff; }
+.layout { display: grid; grid-template-columns: 268px minmax(0, 1fr); max-width: 1500px; margin: 0 auto; }
+.sidebar { background: var(--nav); color: var(--nav-ink); min-height: calc(100vh - 59px); padding: 26px 16px 40px; position: sticky; top: 59px; align-self: start; height: calc(100vh - 59px); overflow-y: auto; }
+.sidebar h2 { color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 1.4px; margin: 0 0 8px 10px; }
+.search { width: 100%; border: 1px solid #2b3c5a; background: #16253f; color: #fff; border-radius: 9px; padding: 9px 11px; font: inherit; font-size: 13px; margin-bottom: 18px; }
+.search::placeholder { color: #8295b4; }
+.sidebar nav a { display: block; padding: 8px 11px; border-radius: 9px; color: var(--nav-ink); text-decoration: none; font-size: 14px; margin-bottom: 2px; border-left: 3px solid transparent; }
+.sidebar nav a:hover { background: #1b2c49; color: #fff; }
+.sidebar nav a.active { background: #1d3557; color: #fff; border-left-color: #2dd4bf; font-weight: 700; }
+.sidebar .side-note { margin: 22px 8px 0; padding: 12px; border-radius: 10px; background: #172947; font-size: 12px; color: #9fb2d0; }
+main { padding: 34px clamp(18px, 4vw, 56px) 80px; min-width: 0; }
+section { margin-bottom: 52px; }
+h1 { font-size: clamp(30px, 4.3vw, 50px); line-height: 1.1; letter-spacing: -1.3px; margin: 0 0 14px; }
+h2 { font-size: clamp(23px, 2.4vw, 30px); letter-spacing: -.6px; margin: 0 0 8px; }
+h3 { font-size: 19px; margin: 26px 0 8px; }
+h4 { font-size: 16px; margin: 18px 0 6px; }
+p { margin: 10px 0; }
+.lead { font-size: 18px; color: var(--muted); max-width: 760px; }
+.hero { background: linear-gradient(135deg, #103b52, #123a6b); color: #eaf4ff; border-radius: 22px; padding: clamp(26px, 4vw, 48px); position: relative; overflow: hidden; box-shadow: var(--shadow); }
+.hero::after { content: ""; position: absolute; right: -90px; top: -100px; width: 340px; height: 340px; border-radius: 50%; border: 55px solid rgba(45,212,191,.10); }
+.hero h1 { color: #fff; }
+.hero .lead { color: #c6dcf4; }
+.hero .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.chip { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.18); color: #fff; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 2.6vw, 28px); box-shadow: var(--shadow); margin: 18px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); gap: 16px; }
+.grid .card { margin: 0; }
+.card h3, .card h4 { margin-top: 0; }
+.tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 4px 9px; border-radius: 6px; margin-bottom: 10px; }
+.tag.blue { color: var(--accent-2); background: #e8efff; }
+.callout { border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; padding: 13px 17px; margin: 16px 0; }
+.callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+.callout strong { color: var(--accent); }
+.callout.warn strong { color: var(--warn); }
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 11px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: #fff; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: #eef3fa; font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: #33455f; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #f8fbff; }
+code, .mono { font-family: "Cascadia Mono", Consolas, "Courier New", monospace; font-size: .92em; }
+code { background: #edf2f8; color: #0b4f6c; padding: 1px 5px; border-radius: 5px; }
+pre { background: #101d33; color: #d9e8ff; padding: 17px 19px; border-radius: 11px; overflow-x: auto; font-size: 13px; line-height: 1.55; margin: 12px 0; }
+pre code { background: none; color: inherit; padding: 0; }
+pre .c { color: #7f9bbd; }
+pre .k { color: #5eead4; }
+pre .v { color: #fcd34d; }
+.formula { font-family: "Cascadia Mono", Consolas, monospace; background: #fff; border: 1px dashed var(--accent); color: #0b5f58; padding: 10px 14px; border-radius: 9px; display: inline-block; margin: 6px 0; font-weight: 700; }
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 14px 0; }
+.steps li { counter-increment: step; position: relative; padding: 8px 0 8px 44px; border-bottom: 1px solid var(--line); }
+.steps li:last-child { border-bottom: 0; }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: 8px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+details { border: 1px solid var(--line); border-radius: 11px; background: #fff; margin: 12px 0; overflow: hidden; }
+details > summary { cursor: pointer; padding: 13px 17px; font-weight: 700; color: var(--ink); background: #f8fbff; list-style: none; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::after { content: "+"; color: var(--accent); font-size: 20px; font-weight: 400; }
+details[open] > summary::after { content: "−"; }
+details > div { padding: 4px 17px 16px; }
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 14px 0; }
+.kv div { background: #f5f9fd; border: 1px solid var(--line); border-radius: 10px; padding: 10px 13px; }
+.kv span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); }
+.kv strong { font-size: 17px; font-family: "Cascadia Mono", Consolas, monospace; color: var(--accent); word-break: break-all; }
+.calc-grid { display: grid; grid-template-columns: minmax(230px, .8fr) minmax(280px, 1.2fr); gap: 22px; }
+label { display: block; font-size: 13px; font-weight: 700; margin: 12px 0 5px; color: #33455f; }
+input[type=text], input[type=number], select { width: 100%; border: 1px solid #cbd8e8; border-radius: 9px; padding: 10px 12px; font: inherit; font-size: 14px; background: #fff; color: var(--ink); }
+input:focus, select:focus, .search:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.err { color: #b91c1c; font-size: 13px; min-height: 20px; margin-top: 8px; }
+.result { background: #0f1d33; color: #e6f1ff; border-radius: 11px; padding: 14px 17px; font-family: "Cascadia Mono", Consolas, monospace; font-size: 13px; }
+.result .row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid #26395a; }
+.result .row:last-child { border-bottom: 0; }
+.result .row span { color: #93a9c9; }
+.result .row b { text-align: right; color: #5eead4; word-break: break-all; }
+.quiz-q { font-size: 18px; font-weight: 700; margin: 4px 0 14px; }
+.opt { display: block; width: 100%; text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 11px 14px; margin: 7px 0; font: inherit; font-size: 14px; cursor: pointer; }
+.opt:hover:not(:disabled) { border-color: var(--accent-2); background: #f5f9ff; }
+.opt.correct { border-color: #15803d; background: #eafbf0; color: #14532d; font-weight: 700; }
+.opt.wrong { border-color: #b91c1c; background: #fef2f2; color: #991b1b; }
+.feedback { min-height: 26px; font-size: 14px; font-weight: 600; margin: 10px 0; }
+.quiz-head { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+footer { border-top: 1px solid var(--line); background: #fff; padding: 24px 26px; color: var(--muted); font-size: 13px; }
+footer .wrap { max-width: 1500px; margin: auto; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; min-height: 0; padding: 16px; }
+  .sidebar nav { display: flex; flex-wrap: wrap; gap: 5px; }
+  .sidebar nav a { margin: 0; background: #172947; }
+  .sidebar .side-note { display: none; }
+  .sidebar h2 { margin-left: 0; }
+  .search { max-width: 340px; }
+}
+@media (max-width: 640px) {
+  .topbar { padding: 10px 14px; }
+  .brand small { display: none; }
+  .btn .lbl { display: none; }
+  .calc-grid { grid-template-columns: 1fr; }
+  main { padding: 22px 14px 60px; }
+}
+@media print {
+  #progress, .topbar, .sidebar, footer, .btn, .quiz-box, .calc-box { display: none !important; }
+  .layout { display: block; }
+  main { padding: 0; }
+  .card, .hero { box-shadow: none; break-inside: avoid; }
+  details { break-inside: avoid; }
+  details:not([open]) > div { display: block; }
+  body { background: #fff; color: #000; }
+  .hero { background: #fff; color: #000; border: 1px solid #999; }
+  .hero h1, .hero .lead { color: #000; }
+  pre { background: #f2f2f2; color: #111; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<header class="topbar">
+  <div class="brand"><div class="logo">R</div><div>Sistemi e Reti<small>Guida alla verifica</small></div></div>
+  <div class="spacer"></div>
+  <button class="btn" id="expandAll" type="button">Apri soluzioni</button>
+  <button class="btn primary" onclick="window.print()" type="button">Stampa / PDF</button>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <h2>Indice</h2>
+  <input class="search" id="search" type="text" placeholder="Cerca un argomento…" aria-label="Cerca un argomento">
+  <nav id="nav">
+    <a href="#intro">Panoramica</a>
+    <a href="#ip">1. Indirizzi IP</a>
+    <a href="#subnetting">2. Subnetting</a>
+    <a href="#calcolatore">3. Calcolatore subnet</a>
+    <a href="#esercizi">4. Esercizi svolti</a>
+    <a href="#routing">5. Routing</a>
+    <a href="#config">6. Configurazione router</a>
+    <a href="#dns">7. Server DNS</a>
+    <a href="#wireless">8. Reti wireless</a>
+    <a href="#mezzi">9. Apparati e mezzi</a>
+    <a href="#quiz">10. Quiz di ripasso</a>
+    <a href="#scheda">11. Scheda finale</a>
+  </nav>
+  <div class="side-note">Materiale elaborato da appunti, PDF, documenti Word, immagini ed esercizi presenti nella cartella «Sistemi e Reti».</div>
+</aside>
+
+<main>
+<section class="hero" id="intro">
+  <div class="tag" style="background:rgba(255,255,255,.16);color:#fff">Verifica di Sistemi e Reti</div>
+  <h1>Dalla teoria all'esercizio,<br>senza perdere i bit.</h1>
+  <p class="lead">Una guida completa e ordinata per ripassare indirizzamento IP, subnetting, instradamento, configurazione dei router e reti wireless. Ogni concetto è spiegato con parole semplici, formule, esempi numerici e gli esercizi della cartella già svolti passo passo.</p>
+  <div class="chips">
+    <span class="chip">Indirizzi IP e classi</span><span class="chip">Maschere e CIDR</span><span class="chip">Routing statico/dinamico</span><span class="chip">Cisco IOS</span><span class="chip">Packet Tracer</span>
+  </div>
+  <div class="chips" style="margin-top:16px">
+    <span class="chip">Subnetting su carta</span><span class="chip">Packet Tracer: end e network devices</span><span class="chip">CLI solo per le password</span><span class="chip">Server DNS</span><span class="chip">Tabelle di routing statico</span>
+  </div>
+</section>
+
+<section id="ip">
+  <span class="tag">Argomento 1</span>
+  <h2>Gli indirizzi IP</h2>
+  <p class="lead">Un indirizzo IPv4 è una sequenza di 32 bit, scritta in quattro gruppi di 8 bit (ottetti) in notazione decimale puntata, per esempio <code>192.168.1.10</code>. Serve a identificare in modo univoco l'interfaccia di rete di un dispositivo (host) e la rete a cui appartiene.</p>
+
+  <h3>Struttura: parte di rete + parte di host</h3>
+  <p>L'indirizzo è diviso in due campi:</p>
+  <ul>
+    <li><strong>Network ID (rete):</strong> identifica la rete; è uguale per tutti gli host della stessa rete.</li>
+    <li><strong>Host ID:</strong> identifica il singolo dispositivo all'interno della rete.</li>
+  </ul>
+  <p>Nel modello <em>classful</em> (a classi), la lunghezza dei due campi dipende dalla classe dell'indirizzo, riconoscibile dal primo ottetto.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Classe</th><th>Primi bit</th><th>Range del 1° ottetto</th><th>Struttura</th><th>Reti</th><th>Host per rete</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A</strong></td><td>0</td><td>1 – 127</td><td>N.H.H.H <code>/8</code></td><td>126</td><td>2²⁴ − 2 = 16.777.214</td><td>WAN, reti enormi</td></tr>
+      <tr><td><strong>B</strong></td><td>10</td><td>128 – 191</td><td>N.N.H.H <code>/16</code></td><td>16.384</td><td>2¹⁶ − 2 = 65.534</td><td>LAN di medie dimensioni</td></tr>
+      <tr><td><strong>C</strong></td><td>110</td><td>192 – 223</td><td>N.N.N.H <code>/24</code></td><td>2.097.152</td><td>2⁸ − 2 = 254</td><td>LAN piccole</td></tr>
+      <tr><td><strong>D</strong></td><td>1110</td><td>224 – 239</td><td>—</td><td>—</td><td>—</td><td>Multicast</td></tr>
+      <tr><td><strong>E</strong></td><td>1111</td><td>240 – 255</td><td>—</td><td>—</td><td>—</td><td>Riservati / usi futuri</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><strong>Perché −2?</strong> In ogni rete due indirizzi non possono essere assegnati agli host: l'<strong>indirizzo di rete</strong> (tutti i bit host a 0) e l'<strong>indirizzo broadcast</strong> (tutti i bit host a 1).</div>
+
+  <h3>Indirizzi privati (RFC 1918)</h3>
+  <p>Sono blocchi riservati alle reti locali: non vengono instradati su Internet e possono essere riutilizzati in reti diverse. Per uscire su Internet serve il <strong>NAT</strong> (Network Address Translation), che traduce l'indirizzo privato in uno pubblico.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Classe</th><th>Blocco privato</th><th>CIDR</th><th>Caratteristiche</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>10.0.0.0 – 10.255.255.255</td><td><code>10.0.0.0/8</code></td><td>Una classe A completa</td></tr>
+      <tr><td>B</td><td>172.16.0.0 – 172.31.255.255</td><td><code>172.16.0.0/12</code></td><td>16 reti di classe B contigue</td></tr>
+      <tr><td>C</td><td>192.168.0.0 – 192.168.255.255</td><td><code>192.168.0.0/16</code></td><td>256 reti di classe C contigue</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Vantaggi:</strong> maggiore sicurezza (le macchine non sono raggiungibili dall'esterno) e abbondanza di spazio di indirizzamento, perché gli stessi indirizzi possono ricorrere in più reti private distanti tra loro.</p>
+
+  <h3>Indirizzi speciali e riservati</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Indirizzo o blocco</th><th>Significato</th></tr></thead>
+    <tbody>
+      <tr><td><code>0.0.0.0</code></td><td>Host corrente / rete di default;usato anche nelle route predefinite come <code>0.0.0.0/0</code></td></tr>
+      <tr><td><code>255.255.255.255</code></td><td>Limited broadcast: tutti gli host della rete locale (non attraversa i router)</td></tr>
+      <tr><td><code>127.0.0.1</code> (127.x.y.z)</td><td>Loopback: test del protocollo TCP/IP sullo stesso host, nessun traffico di rete</td></tr>
+      <tr><td><code>169.254.x.y</code></td><td>Autoconfigurazione automatica (APIPA), usata quando non c'è un server DHCP</td></tr>
+      <tr><td>x.y.z.0</td><td>Indirizzo di rete: identifica la sottorete, non assegnabile</td></tr>
+      <tr><td>x.y.z.255</td><td>Broadcast diretto della rete: raggiunge tutti gli host di quella rete</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="subnetting">
+  <span class="tag">Argomento 2</span>
+  <h2>Il subnetting</h2>
+  <p class="lead">Le classi A, B e C impongono dimensioni fisse: una rete di classe B è spesso troppo grande e una di classe C troppo piccola. Il <strong>subnetting</strong> è la procedura che scompone una rete in <strong>sottoreti</strong> più piccole, trasferendo bit dalla parte host alla parte subnet.</p>
+
+  <h3>Come nasce una sottorete</h3>
+  <p>Con il subnetting l'indirizzo ha tre campi:</p>
+  <div class="kv">
+    <div><span>Campo 1</span><strong>NETWORK</strong></div>
+    <div><span>Campo 2</span><strong>SUBNET</strong></div>
+    <div><span>Campo 3</span><strong>HOST</strong></div>
+  </div>
+  <p>I bit del campo subnet <em>provengono</em> dal vecchio campo host. Si possono spostare almeno 1 bit e conviene lasciare almeno 2 bit per gli host. Esempio: una classe B <code>137.16.0.0/16</code> con 8 bit di subnet diventa <code>137.16.57.174/24</code>: la rete <code>137.16</code> resta invariata, <code>57</code> identifica la sottorete e <code>174</code> l'host.</p>
+
+  <h3>La subnet mask</h3>
+  <p>La <strong>subnet mask</strong> è una sequenza di 32 bit in cui:</p>
+  <ul>
+    <li>i bit a <strong>1</strong> indicano le parti di rete e sottorete;</li>
+    <li>i bit a <strong>0</strong> indicano la parte host.</li>
+  </ul>
+  <p>Gli 1 sono sempre a sinistra e gli 0 sempre a destra: per questo in un ottetto sono ammessi solo 9 valori.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Binario</th><th>Decimale</th></tr></thead>
+    <tbody>
+      <tr><td>00000000</td><td>0</td></tr>
+      <tr><td>10000000</td><td>128</td></tr>
+      <tr><td>11000000</td><td>192</td></tr>
+      <tr><td>11100000</td><td>224</td></tr>
+      <tr><td>11110000</td><td>240</td></tr>
+      <tr><td>11111000</td><td>248</td></tr>
+      <tr><td>11111100</td><td>252</td></tr>
+      <tr><td>11111110</td><td>254</td></tr>
+      <tr><td>11111111</td><td>255</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><strong>Maschere di default:</strong> classe A <code>255.0.0.0 /8</code> · classe B <code>255.255.0.0 /16</code> · classe C <code>255.255.255.0 /24</code>.</div>
+
+  <h3>A cosa serve: l'operazione AND</h3>
+  <p>La maschera permette di ricavare l'indirizzo di rete da qualsiasi IP applicando un <strong>AND bit a bit</strong>: 1 AND 1 = 1, in tutti gli altri casi il risultato è 0.</p>
+  <pre><code>IP:      10.40.80.3   = 00001010.00101000.01010000.00000011
+Maschera:255.0.0.0     = 11111111.00000000.00000000.00000000
+                         ---------------------------------- AND
+Rete:    10.0.0.0      = 00001010.00000000.00000000.00000000</code></pre>
+  <p>Nello stesso modo <code>175.10.12.14</code> con maschera <code>255.255.255.0</code> dà come rete <code>175.10.12.0</code>.</p>
+
+  <h3>Le formule da ricordare</h3>
+  <div class="formula">Sottoreti = 2^s &nbsp;&nbsp;(s = bit presi in prestito dall'host)</div>
+  <div class="formula">Host per sottorete = 2^h − 2 &nbsp;&nbsp;(h = bit rimasti nell'host)</div>
+  <div class="formula">Blocco (salto) = 256 − ultimo ottetto non nullo della maschera</div>
+  <p>Se la maschera è <code>255.255.255.224</code> (cioè <code>/27</code>), il salto è 256 − 224 = <strong>32</strong>: le sottoreti iniziano a .0, .32, .64, .96 e così via. Ognuna ha 32 indirizzi, di cui 30 utilizzabili.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>CIDR</th><th>Maschera</th><th>Indirizzi blocco</th><th>Host utilizzabili</th><th>Salto</th></tr></thead>
+    <tbody>
+      <tr><td>/8</td><td>255.0.0.0</td><td>16.777.216</td><td>16.777.214</td><td>—</td></tr>
+      <tr><td>/16</td><td>255.255.0.0</td><td>65.536</td><td>65.534</td><td>—</td></tr>
+      <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td><td>1 (terzo ottetto)</td></tr>
+      <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td><td>128</td></tr>
+      <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td><td>64</td></tr>
+      <tr><td>/27</td><td>255.255.255.224</td><td>32</td><td>30</td><td>32</td></tr>
+      <tr><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td><td>16</td></tr>
+      <tr><td>/29</td><td>255.255.255.248</td><td>8</td><td>6</td><td>8</td></tr>
+      <tr><td>/30</td><td>255.255.255.252</td><td>4</td><td>2</td><td>4</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Maschera fissa o VLSM?</h3>
+  <p>Con la <strong>maschera fissa</strong> tutte le sottoreti hanno la stessa lunghezza, scelta in base a quella che deve contenere il maggior numero di host (es. 60 host → serve /26, capienza 62). È il metodo usato negli appunti.</p>
+  <p>Con la <strong>VLSM</strong> (Variable Length Subnet Mask) si usano maschere diverse per ogni sottorete, scegliendo la più piccola che soddisfi il numero di host richiesto: si spreca meno spazio, ma il piano di indirizzamento va costruito con cura, dalle sottoreti più grandi alle più piccole.</p>
+
+  <h3>Consegna diretta, indiretta e gateway</h3>
+  <ul>
+    <li><strong>Consegna diretta:</strong> gli host nella stessa sottorete comunicano senza router.</li>
+    <li><strong>Consegna indiretta:</strong> per raggiungere un'altra rete il pacchetto va al <strong>gateway</strong> (router), che ha un indirizzo nella stessa sottorete.</li>
+    <li>Per convenzione al gateway si assegna uno degli ultimi indirizzi utilizzabili (spesso quello immediatamente prima del broadcast), ai server i primi.</li>
+    <li>Senza gateway la comunicazione resta limitata alla sola sottorete locale.</li>
+  </ul>
+  <p>Per configurare correttamente un host servono tre parametri: <strong>indirizzo IP</strong>, <strong>subnet mask</strong> e <strong>default gateway</strong>.</p>
+</section>
+
+<section id="calcolatore">
+  <span class="tag blue">Strumento interattivo</span>
+  <h2>Calcolatore di subnet</h2>
+  <p class="lead">Inserisci un indirizzo IP e una prefix length (oppure una maschera in notazione decimale): lo strumento calcola rete, broadcast, primo e ultimo host, maschera, wildcard e rappresentazione binaria. Utile per controllare gli esercizi in pochi secondi.</p>
+  <div class="card calc-box">
+    <div class="calc-grid">
+      <div>
+        <label for="ipInput">Indirizzo IP</label>
+        <input id="ipInput" type="text" value="192.168.10.75" spellcheck="false" autocomplete="off">
+        <label for="maskInput">Maschera / prefisso</label>
+        <input id="maskInput" type="text" value="/26" spellcheck="false" autocomplete="off" placeholder="/26 oppure 255.255.255.192">
+        <p style="font-size:12px;color:var(--muted)">Esempi: <code>/27</code>, <code>/26</code>, <code>255.255.255.224</code></p>
+        <div class="err" id="calcErr" role="alert"></div>
+        <button class="btn primary" id="calcBtn" type="button">Calcola</button>
+      </div>
+      <div class="result" id="calcResult" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section id="esercizi">
+  <span class="tag">Argomento 4</span>
+  <h2>Esercizi svolti della cartella</h2>
+  <p class="lead">Ecco le soluzioni ragionate degli esercizi presenti nella cartella. Apri ogni riquadro per vedere il procedimento: il metodo è sempre lo stesso — determinare la maschera, calcolare il salto, scrivere i blocchi e poi ricavare rete, host e broadcast.</p>
+
+  <details open><summary>Esercizio 1 — 198.168.40.0 con maschera 255.255.255.224</summary><div>
+    <p>La maschera <code>255.255.255.224</code> corrisponde a <code>/27</code>: 27 bit di rete e 5 bit di host. Il salto è 256 − 224 = <strong>32</strong>, quindi si ottengono 2³ = <strong>8 sottoreti</strong> da 32 indirizzi (30 host utilizzabili ciascuna).</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Sottorete</th><th>Indirizzo di rete</th><th>Host utilizzabili</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>198.168.40.0/27</td><td>.1 – .30</td><td>198.168.40.31</td></tr>
+        <tr><td>2</td><td>198.168.40.32/27</td><td>.33 – .62</td><td>198.168.40.63</td></tr>
+        <tr><td>3</td><td>198.168.40.64/27</td><td>.65 – .94</td><td>198.168.40.95</td></tr>
+        <tr><td>4</td><td>198.168.40.96/27</td><td>.97 – .126</td><td>198.168.40.127</td></tr>
+        <tr><td>5</td><td>198.168.40.128/27</td><td>.129 – .158</td><td>198.168.40.159</td></tr>
+        <tr><td>6</td><td>198.168.40.160/27</td><td>.161 – .190</td><td>198.168.40.191</td></tr>
+        <tr><td>7</td><td>198.168.40.192/27</td><td>.193 – .222</td><td>198.168.40.223</td></tr>
+        <tr><td>8</td><td>198.168.40.224/27</td><td>.225 – .254</td><td>198.168.40.255</td></tr>
+      </tbody>
+    </table></div>
+  </div></details>
+
+  <details><summary>Esercizio 2 — dividere 192.168.0.0 in due sottoreti</summary><div>
+    <p>Prendere un bit dall'host della classe C significa passare da <code>/24</code> a <code>/25</code> (maschera <code>255.255.255.128</code>): 2¹ = 2 sottoreti, ognuna con 2⁷ − 2 = 126 host.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Sottorete</th><th>Rete</th><th>Host</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>192.168.0.0/25</td><td>192.168.0.1 – 192.168.0.126</td><td>192.168.0.127</td></tr>
+        <tr><td>2</td><td>192.168.0.128/25</td><td>192.168.0.129 – 192.168.0.254</td><td>192.168.0.255</td></tr>
+      </tbody>
+    </table></div>
+    <p>Il gateway delle due LAN sarà, per convenzione, <code>192.168.0.126</code> e <code>192.168.0.254</code> (oppure il primo indirizzo utile di ogni blocco).</p>
+  </div></details>
+
+  <details><summary>Esercizio 3 — 192.168.0.0: tre LAN da 31, 25 e 60 host</summary><div>
+    <p>La LAN più grande richiede 60 host: serve una maschera che offra almeno 62 indirizzi utilizzabili → <code>/26</code> (maschera <code>255.255.255.192</code>, salto 64). Con maschera fissa si ottengono 4 sottoreti, ne bastano 3.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>LAN</th><th>Rete</th><th>Host richiesti</th><th>Range utilizzabile</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>192.168.0.0/26</td><td>31</td><td>.1 – .62</td><td>192.168.0.63</td></tr>
+        <tr><td>B</td><td>192.168.0.64/26</td><td>25</td><td>.65 – .126</td><td>192.168.0.127</td></tr>
+        <tr><td>C</td><td>192.168.0.128/26</td><td>60</td><td>.129 – .190</td><td>192.168.0.191</td></tr>
+        <tr><td>libera</td><td>192.168.0.192/26</td><td>—</td><td>.193 – .254</td><td>192.168.0.255</td></tr>
+      </tbody>
+    </table></div>
+    <p>L'assegnazione delle prime tre sottoreti alle LAN è arbitraria: l'importante è che la capienza sia sufficiente.</p>
+  </div></details>
+
+  <details><summary>Esercizio 4 — a che rete appartiene 175.10.12.14/24?</summary><div>
+    <p>Eseguiamo l'AND tra <code>175.10.12.14</code> e <code>255.255.255.0</code>. I primi tre ottetti restano identici (maschera a 255), l'ultimo diventa 0:</p>
+    <pre><code>175.10.12.14  AND  255.255.255.0  =  175.10.12.0</code></pre>
+    <div class="kv">
+      <div><span>Rete</span><strong>175.10.12.0</strong></div>
+      <div><span>Host</span><strong>175.10.12.14</strong></div>
+      <div><span>Broadcast</span><strong>175.10.12.255</strong></div>
+    </div>
+    <p>La classe è B (primo ottetto 175), ma la maschera /24 crea una sottorete di classe C. È un esempio di subnetting di una rete B.</p>
+  </div></details>
+
+  <details><summary>Esercizio 5 — rete 158.110.0.0 con 3 LAN, 15 client e 3 server</summary><div>
+    <p>Ogni LAN ospita 1 server + 5 client = 6 dispositivi, più l'interfaccia del router usata come gateway. Servono quindi almeno 7 indirizzi per LAN. Il documento «analisi possibili SOL es 5» propone tre strade:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Opzione</th><th>Indirizzi per LAN</th><th>Utilizzabili</th><th>Valutazione</th></tr></thead>
+      <tbody>
+        <tr><td>/18</td><td>16.384</td><td>16.382</td><td>Matematicamente corretta ma spreca indirizzi</td></tr>
+        <tr><td>/26</td><td>64</td><td>62</td><td>Efficiente: 158.110.0.0, .64, .128, .192</td></tr>
+        <tr><td>/24</td><td>256</td><td>254</td><td>Intuitiva e facile da leggere (usata negli appunti)</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Soluzione /24 consigliata dagli appunti</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>LAN</th><th>Rete</th><th>Router (gateway)</th><th>Server</th><th>Client</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>158.110.1.0/24</td><td>158.110.1.254</td><td>158.110.1.1</td><td>.2 – .6</td><td>158.110.1.255</td></tr>
+        <tr><td>2</td><td>158.110.2.0/24</td><td>158.110.2.254</td><td>158.110.2.1</td><td>.2 – .6</td><td>158.110.2.255</td></tr>
+        <tr><td>3</td><td>158.110.3.0/24</td><td>158.110.3.254</td><td>158.110.3.1</td><td>.2 – .6</td><td>158.110.3.255</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Apparati e mezzi:</strong> PC client e server (con scheda Fast/Gigabit Ethernet), 3 switch per collegare gli host di ogni LAN, 1 router con tre interfacce (gateway delle LAN), cavi UTP categoria 5e per i collegamenti horizontal e uplink a 1 Gbps verso il router. Il router smista il traffico tra le tre LAN.</p>
+  </div></details>
+
+  <details><summary>Esercizio 6 — tre sedi S1 (50 host), S2 (40), S3 (20) e MAN a maglia completa</summary><div>
+    <p>La rete assegnata è <code>200.69.96.0/24</code>. Servono 4 blocchi logici: tre LAN e la MAN (M) che collega i router a maglia completa. Poiché la LAN più grande ha 50 host, una maschera <code>/26</code> (62 host utilizzabili) è sufficiente per tutte: 4 sottoreti da 64 indirizzi.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Rete</th><th>CIDR</th><th>Router</th><th>Host</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>S1 (50 host)</td><td>200.69.96.0/26</td><td>200.69.96.62</td><td>.1 – .61</td><td>200.69.96.63</td></tr>
+        <tr><td>S2 (40 host)</td><td>200.69.96.64/26</td><td>200.69.96.126</td><td>.65 – .125</td><td>200.69.96.127</td></tr>
+        <tr><td>S3 (20 host)</td><td>200.69.96.128/26</td><td>200.69.96.190</td><td>.129 – .189</td><td>200.69.96.191</td></tr>
+        <tr><td>M (MAN)</td><td>200.69.96.192/26</td><td>router M: .193 – .195</td><td>.193 – .254</td><td>200.69.96.255</td></tr>
+      </tbody>
+    </table></div>
+    <p>La maglia completa prevede 3 collegamenti punto-punto (S1–S2, S1–S3, S2–S3); in alternativa più efficiente si possono usare sottoreti <code>/30</code> per ciascun link. Gli appunti assegnano l'intero blocco <code>/26</code> alla MAN.</p>
+  </div></details>
+
+  <details><summary>Preparazione verifica (1) — 192.168.0.128/25 e 10.10.0.0/22</summary><div>
+    <h4>Prima parte: S1 30 host, S2 10 host, S3 15 host</h4>
+    <p>Con <strong>maschera fissa</strong> la LAN più grande (30 host) impone <code>/27</code> (30 utilizzabili, salto 32). Dentro <code>192.168.0.128/25</code> abbiamo quattro blocchi /27:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Sottorete</th><th>Rete</th><th>Maschera</th><th>Host utilizzabili</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>S1 (30)</td><td>192.168.0.128/27</td><td>255.255.255.224</td><td>.129 – .158</td><td>192.168.0.159</td></tr>
+        <tr><td>S3 (15)</td><td>192.168.0.160/27</td><td>255.255.255.224</td><td>.161 – .190</td><td>192.168.0.191</td></tr>
+        <tr><td>S2 (10)</td><td>192.168.0.192/27</td><td>255.255.255.224</td><td>.193 – .222</td><td>192.168.0.223</td></tr>
+        <tr><td>non usata</td><td>192.168.0.224/27</td><td>255.255.255.224</td><td>.225 – .254</td><td>192.168.0.255</td></tr>
+      </tbody>
+    </table></div>
+    <p>Con <strong>VLSM</strong> si risparmia spazio: S1 <code>.128/27</code> (30 host), S3 <code>.160/27</code> (15 host, perché /28 darebbe solo 14 host), S2 <code>.192/28</code> (14 host, range .193–.206, broadcast .207).</p>
+    <h4>Seconda parte: 10.10.0.0/22 in 4 subnet uguali</h4>
+    <p>Da /22 a /24 servono 2 bit aggiuntivi (2² = 4). Ogni subnet ha 256 indirizzi e 254 host.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Subnet</th><th>Rete</th><th>Primo host</th><th>Ultimo host</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>10.10.0.0/24</td><td>10.10.0.1</td><td>10.10.0.254</td><td>10.10.0.255</td></tr>
+        <tr><td>2</td><td>10.10.1.0/24</td><td>10.10.1.1</td><td>10.10.1.254</td><td>10.10.1.255</td></tr>
+        <tr><td>3</td><td>10.10.2.0/24</td><td>10.10.2.1</td><td>10.10.2.254</td><td>10.10.2.255</td></tr>
+        <tr><td>4</td><td>10.10.3.0/24</td><td>10.10.3.1</td><td>10.10.3.254</td><td>10.10.3.255</td></tr>
+      </tbody>
+    </table></div>
+  </div></details>
+
+  <details><summary>Preparazione verifica (2) — 192.168.10.0/24 con LAN 5+n, 10+n, 15+n</summary><div>
+    <p>Il numero <code>n</code> non è noto, quindi il procedimento è: calcola il fabbisogno massimo di ogni LAN (5+n, 10+n, 15+n), poi scegli per ciascuna la maschera più piccola tale che <code>2^h − 2 ≥ host</code>. Con maschera fissa scegli la /26 o /27 in base al valore più grande.</p>
+    <p>Esempio con <code>n = 10</code> (LAN1 = 15, LAN2 = 20, LAN3 = 25 host):</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>LAN</th><th>Host</th><th>Rete</th><th>Maschera</th><th>Range host</th><th>Broadcast</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>15</td><td>192.168.10.0/27</td><td>255.255.255.224</td><td>.1 – .30</td><td>192.168.10.31</td></tr>
+        <tr><td>2</td><td>20</td><td>192.168.10.32/27</td><td>255.255.255.224</td><td>.33 – .62</td><td>192.168.10.63</td></tr>
+        <tr><td>3</td><td>25</td><td>192.168.10.64/27</td><td>255.255.255.224</td><td>.65 – .94</td><td>192.168.10.95</td></tr>
+      </tbody>
+    </table></div>
+    <p>Se <code>n ≥ 16</code> la LAN3 supera 30 host e passa a <code>/26</code> (es. <code>192.168.10.64/26</code>, .65 – .126, broadcast .127). Per la parte successiva (secondo router <code>192.168.30.0/24</code> con PC Lab) serve una rete di collegamento tra router, per esempio <code>192.168.20.0/24</code>, e due route statiche:</p>
+    <pre><code><span class="c">! sul Router 1</span>
+<span class="k">ip route</span> 192.168.30.0 255.255.255.0 <span class="v">192.168.20.2</span>
+<span class="c">! sul Router 2</span>
+<span class="k">ip route</span> 192.168.10.0 255.255.255.0 <span class="v">192.168.20.1</span></code></pre>
+    <p>Test finali: <code>ping</code> tra PC delle LAN e <code>show ip route</code> per verificare la presenza delle route con codice <strong>S</strong> (static) accanto a quelle <strong>C</strong> (connected).</p>
+  </div></details>
+
+  <details><summary>Esercizio 7 e libro p.29 — LAN cablate, Wi-Fi e sicurezza</summary><div>
+    <p><strong>Esercizio 7 (es ripasso):</strong> realizzare una rete con 1 router, 2 switch e 1 access point. LAN A: 3 PC cablati; LAN B: smartphone + laptop in Wi-Fi; LAN C: laptop, stampante e PC. Si riprende il piano di indirizzamento dell'esercizio 3 (<code>192.168.0.0/24</code> suddivisa in /26): ogni LAN riceve un blocco, il router è il gateway, e vanno impostate <code>enable secret</code>, password su <code>line con 0</code> e <code>line vty 0 4</code>. Verifica finale: ping incrociato tra host cablati e wireless.</p>
+    <p><strong>Libro p.29:</strong> due uffici (amministrazione: 2 PC; sviluppatori: 2 PC + 1 laptop) più 2 server in un locale climatizzato. Uno schema valido con <code>192.168.0.0/24</code>:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>LAN</th><th>Rete</th><th>Gateway</th><th>Dispositivi</th></tr></thead>
+      <tbody>
+        <tr><td>Amministrazione</td><td>192.168.0.0/26</td><td>192.168.0.62</td><td>2 PC (.1, .2)</td></tr>
+        <tr><td>Sviluppatori</td><td>192.168.0.64/26</td><td>192.168.0.126</td><td>2 PC + 1 laptop (.65–.67)</td></tr>
+        <tr><td>Server</td><td>192.168.0.128/26</td><td>192.168.0.190</td><td>2 server (.129, .130)</td></tr>
+      </tbody>
+    </table></div>
+    <p>Servono switch per espandere le porte del router, moduli NIC/GBIC dove mancano le interfacce, cavi UTP e configurazione delle password; la verifica si fa con <code>ping</code>, <code>show ip interface brief</code> e <code>show ip route</code>.</p>
+  </div></details>
+
+  <details><summary>Esercizio 8 e libro pp.52-59 — tabelle di routing statico e default route</summary><div>
+    <p>La rete del libro usa due router e tre reti: <code>192.168.10.0/24</code> (PC1), <code>192.168.20.0/24</code> (link tra router) e <code>192.168.30.0/24</code> (PC2). Ogni router conosce solo le reti <em>connected</em> (codice <strong>C</strong> in <code>show ip route</code>). Per far comunicare PC1 e PC2 vanno aggiunte le rotte statiche (codice <strong>S</strong>):</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Router</th><th>Rete remota</th><th>Maschera</th><th>Next hop</th></tr></thead>
+      <tbody>
+        <tr><td>Router 1</td><td>192.168.30.0</td><td>255.255.255.0</td><td>192.168.20.2</td></tr>
+        <tr><td>Router 2</td><td>192.168.10.0</td><td>255.255.255.0</td><td>192.168.20.1</td></tr>
+      </tbody>
+    </table></div>
+    <p>Il laboratorio del libro aggiunge il <strong>dual-stack IPv4/IPv6</strong>, collegamenti seriali ridondanti e una default route verso Internet:</p>
+    <pre><code><span class="c">! route statiche IPv4 e IPv6</span>
+<span class="k">ip route</span> 192.168.1.0 255.255.255.0 serial 0/1/0
+<span class="k">ipv6 route</span> FC00:1::/64 serial 0/1/0
+<span class="c">! default route (rete non nota a priori)</span>
+<span class="k">ip route</span> 0.0.0.0 0.0.0.0 serial 0/1/1
+<span class="k">ipv6 route</span> ::/0 serial 0/1/1
+<span class="c">! verifica e salvataggio</span>
+<span class="k">show ip route</span>
+<span class="k">show ipv6 route</span>
+<span class="k">copy running-config startup-config</span></code></pre>
+    <p><strong>Conclusione del laboratorio:</strong> il routing statico abilita la comunicazione tra tutte le reti; se si interrompe un collegamento le reti coinvolte diventano irraggiungibili (<code>Destination host unreachable</code>) perché non esiste un aggiornamento automatico; con opportune default route si raggiungono anche reti non conosciute.</p>
+  </div></details>
+</section>
+
+<section id="routing">
+  <span class="tag">Argomento 5</span>
+  <h2>Routing statico e dinamico</h2>
+  <p class="lead">Il <strong>router</strong> è il dispositivo del livello di rete che collega reti diverse. Ha due compiti principali: determinare il percorso ottimale e trasportare le informazioni tra due reti. Quando riceve un pacchetto deve consegnarlo all'host destinatario o a un altro router.</p>
+
+  <h3>Consegna diretta e indiretta</h3>
+  <div class="grid">
+    <div class="card"><span class="tag">Diretta</span><h3>Instradamento diretto</h3><p>Il router è collegato direttamente alla rete di destinazione: inoltra il pacchetto all'host locale usando il suo indirizzo di livello di collegamento (MAC).</p></div>
+    <div class="card"><span class="tag blue">Indiretta</span><h3>Instradamento indiretto</h3><p>La destinazione non è collegata direttamente: il pacchetto viene inviato a un router intermedio, il <strong>next hop</strong>, scelto nella tabella di routing.</p></div>
+  </div>
+
+  <h3>La tabella di routing</h3>
+  <p>Contiene i percorsi verso le reti remote e deve essere sempre aggiornata. Ogni riga indica: rete di destinazione, maschera, next hop o interfaccia di uscita, metrica e tipo di route. Il routing IP è <strong>destination-based</strong> con inoltro al nodo successivo: pacchetti con la stessa destinazione, anche arrivati da link diversi, seguono lo stesso percorso da quel router.</p>
+  <p>Nel comando <code>show ip route</code> i codici più importanti sono: <strong>C</strong> = connected, <strong>S</strong> = static, <strong>R</strong> = RIP, <strong>O</strong> = OSPF, <strong>B</strong> = BGP.</p>
+
+  <h3>Algoritmi adattivi e non adattivi</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Caratteristica</th><th>Routing statico (non adattivo)</th><th>Routing dinamico (adattivo)</th></tr></thead>
+    <tbody>
+      <tr><td>Chi crea le route</td><td>L'amministratore a mano</td><td>Protocolli di routing in automatico</td></tr>
+      <tr><td>Reazione ai cambiamenti</td><td>Nessuna: serve intervento manuale</td><td>Automatica: nuovi nodi, guasti, congestioni</td></tr>
+      <tr><td>Scalabilità</td><td>Bassa, adatto a reti piccole</td><td>Alta, adatto a reti grandi</td></tr>
+      <tr><td>Carico sulla rete</td><td>Nessun traffico di aggiornamento</td><td>Scambio periodico di informazioni → più banda</td></tr>
+      <tr><td>Complessità</td><td>Semplice e prevedibile</td><td>Più complesso, ma flessibile</td></tr>
+      <tr><td>Controllo amministrativo</td><td>Massimo</td><td>Minore</td></tr>
+    </tbody>
+  </table></div>
+  <p>Il routing statico resta utile quando un router ha una sola connessione, o quando tutte le destinazioni tranne una sono fisse e l'ultima funziona da «uscita di default». Il suo limite principale è l'impossibilità di reagire da solo a guasti e cambi di topologia.</p>
+
+  <h3>Politiche di instradamento e alberi</h3>
+  <ul>
+    <li>Un algoritmo di routing è il <strong>criterio di scelta del cammino</strong> usato per costruire le tabelle.</li>
+    <li>Il vincolo fondamentale: i cammini da ogni sorgente verso una destinazione D devono formare un <strong>albero senza cicli</strong>.</li>
+    <li>Le reti TCP/IP usano il calcolo dei <strong>cammini minimi</strong> su un grafo in cui ogni arco ha un peso (metrica): distanza, numero di salti o tempo di transito.</li>
+    <li>Le politiche si classificano come <strong>isolate</strong> (solo informazioni locali), <strong>centralizzate</strong> (un centro conosce tutta la rete, non scalabile), <strong>miste</strong> e <strong>distribuite</strong> (i nodi cooperano: è il caso di Internet, scalabile e robusto).</li>
+    <li>Proprietà desiderabili: correttezza, semplicità, robustezza, stabilità (convergenza), imparzialità e ottimizzazione.</li>
+  </ul>
+
+  <h3>Routing distribuito: link state e distance vector</h3>
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Conoscenza completa</span>
+      <h3>Link state</h3>
+      <p>Ogni router ha la mappa completa della rete. Invia <em>Link State Packet</em> in broadcast solo quando cambia la topologia e calcola in autonomia il miglior next hop (SPF, flooding, flow-based).</p>
+      <p><strong>Gestione dei pacchetti:</strong> numero di sequenza più recente → memorizza e inoltra a tutti tranne il mittente; uguale → scarta; più vecchio → rimanda al mittente.</p>
+      <p><strong>Pro:</strong> convergenza rapida, pochi cicli, reti grandi. <strong>Contro:</strong> complesso, richiede molta memoria e CPU.</p>
+    </div>
+    <div class="card">
+      <span class="tag blue">Conoscenza parziale</span>
+      <h3>Distance vector</h3>
+      <p>Ogni router conosce solo i vicini e riceve da loro le distanze. Con l'algoritmo di <strong>Bellman-Ford</strong> costruisce una tabella con distanza stimata e primo passo per ogni destinazione, poi la comunica periodicamente ai vicini.</p>
+      <p><strong>Problemi:</strong> possono nascere cicli e il <em>count-to-infinity</em>: se cade il link A–B, B sente che C dichiara di raggiungere A in 2 passi e conclude (erroneamente) di poterlo fare in 3 tramite C, e il valore continua a crescere.</p>
+    </div>
+  </div>
+
+  <h3>Sistemi autonomi e protocolli</h3>
+  <p>Internet è un insieme di <strong>Autonomous System (AS)</strong> interconnessi: questa è il <strong>routing gerarchico</strong>. I protocolli interni all'AS sono <strong>IGP</strong>, quelli tra AS sono <strong>EGP</strong>. Un AS può dividersi in Routing Area collegate da un backbone.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Protocollo</th><th>Tipo</th><th>Famiglia</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>RIP</td><td>IGP</td><td>Distance vector</td><td>Bellman-Ford, metrica = numero di hop</td></tr>
+      <tr><td>OSPF</td><td>IGP</td><td>Link state</td><td>Open Shortest Path First, Dijkstra</td></tr>
+      <tr><td>IGRP</td><td>IGP</td><td>Distance vector</td><td>Sviluppato da Cisco per superare i limiti di RIP</td></tr>
+      <tr><td>IS-IS</td><td>IGP</td><td>Link state</td><td>Molto simile a OSPF</td></tr>
+      <tr><td>EGP</td><td>EGP</td><td>Interdominio</td><td>Il primo storico, oggi sostituito</td></tr>
+      <tr><td>BGP-4</td><td>EGP</td><td>Interdominio</td><td>Protocollo attualmente usato tra AS</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="config">
+  <span class="tag">Argomento 6</span>
+  <h2>Configurazione del router (Cisco IOS)</h2>
+  <p class="lead">Il router può essere configurato dalla GUI di Packet Tracer, dalla CLI locale o da un PC collegato con cavo console. Nella pratica si usa un terminale su porta console: non serve indirizzamento IP e non ci sono problemi di raggiungibilità, ma host e router devono essere nello stesso locale.</p>
+
+  <h3>Parametri della console e modalità</h3>
+  <p>Emulatore Terminal di Packet Tracer: <strong>9600 baud, 8 data bit, nessuna parità, 1 stop bit, nessun flow control</strong> (8N1). I livelli di comando sono:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Modalità</th><th>Prompt</th><th>Come si entra</th><th>Cosa si fa</th></tr></thead>
+    <tbody>
+      <tr><td>User EXEC</td><td><code>Router&gt;</code></td><td>accesso iniziale</td><td>comandi di base</td></tr>
+      <tr><td>Privileged EXEC</td><td><code>Router#</code></td><td><code>enable</code></td><td>comandi di verifica</td></tr>
+      <tr><td>Global configuration</td><td><code>Router(config)#</code></td><td><code>configure terminal</code></td><td>configurazione globale</td></tr>
+      <tr><td>Interface / Line</td><td><code>Router(config-if)#</code></td><td><code>interface …</code> / <code>line …</code></td><td>parametri di porta o linea</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Configurare un'interfaccia</h3>
+  <pre><code><span class="k">enable</span>
+<span class="k">configure terminal</span>
+<span class="k">hostname</span> Archimede
+<span class="k">interface</span> FastEthernet0/0
+<span class="k">ip address</span> <span class="v">170.16.2.1 255.255.0.0</span>
+<span class="k">no shutdown</span>
+<span class="k">exit</span>
+<span class="k">show ip interface brief</span></code></pre>
+  <p>Il comando <code>no shutdown</code> «accende» la porta: senza di esso il LED resta rosso e l'interfaccia resta down. La configurazione attuale risiede nella RAM (<em>running-config</em>); per conservarla nella NVRAM occorre <code>copy running-config startup-config</code>. Per azzerare tutto: <code>erase startup-config</code> e <code>reload</code>.</p>
+
+  <h3>Proteggere l'accesso</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Dove</th><th>Comandi</th><th>Effetto</th></tr></thead>
+    <tbody>
+      <tr><td>Console</td><td><code>line console 0</code><br><code>password Pitagorico</code><br><code>login</code></td><td>Richiede password a chi usa il cavo console</td></tr>
+      <tr><td>Telnet / SSH</td><td><code>line vty 0 4</code><br><code>password Siracusa</code><br><code>login</code></td><td>Richiede password per l'accesso remoto</td></tr>
+      <tr><td>Privileged EXEC</td><td><code>enable password Euclide</code></td><td>Password memorizzata <strong>in chiaro</strong> nel file di configurazione</td></tr>
+      <tr><td>Privileged EXEC</td><td><code>enable secret Password1</code></td><td>Password <strong>cifrata</strong> (consigliata): appare come hash in <code>show running-config</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>In alternativa si può abilitare la cifratura globale con <code>service password-encryption</code>. Per ragioni di sicurezza usare sempre <code>enable secret</code> e, dove possibile, SSH invece di Telnet.</p>
+
+  <h3>Route statiche, default route e IPv6</h3>
+  <pre><code><span class="c">! route statica verso una rete remota (next hop)</span>
+<span class="k">ip route</span> 192.168.30.0 255.255.255.0 <span class="v">192.168.20.2</span>
+<span class="c">! route statica su interfaccia di uscita (link point-to-point)</span>
+<span class="k">ip route</span> 192.168.1.0 255.255.255.0 <span class="v">serial 0/1/0</span>
+<span class="c">! default route: qualsiasi rete non nota</span>
+<span class="k">ip route</span> 0.0.0.0 0.0.0.0 <span class="v">192.168.20.2</span>
+<span class="c">! dual-stack IPv6</span>
+<span class="k">ipv6 unicast-routing</span>
+<span class="k">ipv6 address</span> <span class="v">FC00:1::1/64</span>
+<span class="k">ipv6 route</span> FC00:2::/64 <span class="v">serial 0/1/1</span>
+<span class="k">ipv6 route</span> ::/0 <span class="v">serial 0/1/1</span>
+<span class="c">! verifica e salvataggio</span>
+<span class="k">show ip route</span>   <span class="k">show ipv6 route</span>
+<span class="k">copy running-config startup-config</span></code></pre>
+  <div class="callout"><strong>La regola d'oro:</strong> una route statica non si aggiorna da sola. Se un collegamento cade, il router continua a usare la vecchia rotta finché l'amministratore non la modifica: per questo si prevedono percorsi alternativi o una default route.</div>
+</section>
+
+<section id="dns">
+  <span class="tag">Argomento 7</span>
+  <h2>Configurazione di un server DNS</h2>
+  <p class="lead">Il <strong>DNS</strong> (Domain Name System) traduce i nomi simbolici dei siti e dei servizi, per esempio <code>www.azienda.local</code>, negli indirizzi IP che la rete sa instradare. In Packet Tracer il servizio DNS risiede su un <code>Server-PT</code> e viene configurato dalla scheda grafica, non da CLI.</p>
+  <ol class="steps">
+    <li>Inserire un <code>Server-PT</code> nella rete e collegarlo a uno switch o direttamente al router.</li>
+    <li>Configurare l'indirizzo IP del server (per esempio <code>192.168.10.53/24</code>) e il default gateway, cioè l'interfaccia del router della stessa sottorete.</li>
+    <li>Aprire la scheda <strong>Services → DNS</strong>, attivare il servizio (<code>ON</code>) e inserire i record: nome + indirizzo IP corrispondente.</li>
+    <li>Su ogni PC andare in <strong>Config → IP Configuration</strong> (o Desktop → IP Configuration) e indicare l'IP del server DNS nel campo <em>DNS Server</em>. Se si usa DHCP, il DNS può essere distribuito automaticamente.</li>
+    <li>Verificare con <code>nslookup www.azienda.local</code> dal prompt dei comandi del PC: la risposta deve contenere l'IP configurato. Confermare con <code>ping www.azienda.local</code>.</li>
+  </ol>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Nome (record A)</th><th>Indirizzo IP</th><th>Significato</th></tr></thead>
+    <tbody>
+      <tr><td>www.azienda.local</td><td>192.168.10.80</td><td>Server web interno</td></tr>
+      <tr><td>fileserver.azienda.local</td><td>192.168.10.81</td><td>Server file interno</td></tr>
+      <tr><td>dns.azienda.local</td><td>192.168.10.53</td><td>Il server DNS stesso</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><strong>Da non confondere:</strong> il DNS risolve i nomi, ma non instrada i pacchetti. Per raggiungere una rete remota servono comunque il gateway predefinito e, quando il router non è collegato direttamente, le <a href="#routing">route statiche</a>.</div>
+</section>
+
+<section id="wireless">
+  <span class="tag">Argomento 8</span>
+  <h2>Reti wireless con Packet Tracer</h2>
+  <p class="lead">Una LAN può essere mista: host cablati collegati a uno switch e dispositivi mobili collegati tramite <strong>Access Point (AP)</strong>. L'AP fa da ponte tra il mezzo radio e la rete cablata.</p>
+  <ol class="steps">
+    <li>Inserire gli end device wireless (Smart Device, TabletPC-PT, laptop con modulo <code>WPC300N</code>) e un <code>AccessPoint-PT</code> tra i Wireless Devices.</li>
+    <li>Aggiungere uno switch e collegare ad esso sia l'AP sia i PC cablati con cavo automatico.</li>
+    <li>Configurare l'AP con <strong>SSID</strong> e sicurezza <strong>WPA2-PSK</strong> (o WPA-PSK) con passphrase.</li>
+    <li>Assegnare indirizzi IP statici ai dispositivi: per esempio PC <code>192.168.1.1/24</code> e PDA <code>192.168.1.2/24</code>. Ricordarsi di abilitare la configurazione IP di tipo Static.</li>
+    <li>Nella vista logica usare icone personalizzate per smartphone, PC e laptop, poi verificare con un PDU ping: il risultato <code>Successful</code> conferma la connettività.</li>
+  </ol>
+  <div class="callout warn"><strong>Attenzione:</strong> smartphone e laptop wireless devono appartenere alla stessa sottorete degli host cablati (oppure essere instradati da un router) e devono usare lo stesso SSID e la stessa chiave dell'AP.</div>
+</section>
+
+<section id="mezzi">
+  <span class="tag">Argomento 9</span>
+  <h2>Apparati e mezzi trasmissivi</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Apparato / mezzo</th><th>Livello</th><th>Funzione</th></tr></thead>
+    <tbody>
+      <tr><td>PC, laptop, smartphone, stampante, server</td><td>Host (livelli 1–7)</td><td>Dispositivi finali che generano e ricevono dati</td></tr>
+      <tr><td>NIC / scheda Ethernet / modulo WPC300N</td><td>Livello 1–2</td><td>Interfaccia di rete; il modulo wireless va aggiunto ai laptop che ne sono sprovvisti</td></tr>
+      <tr><td>Switch</td><td>Livello 2</td><td>Collega più host della stessa LAN e inoltra i frame in base agli indirizzi MAC</td></tr>
+      <tr><td>Router</td><td>Livello 3</td><td>Collega reti diverse e instrada i pacchetti IP</td></tr>
+      <tr><td>Access Point</td><td>Livello 1–2</td><td>Estende la LAN con collegamento radio (Wi-Fi)</td></tr>
+      <tr><td>Cavo UTP cat. 5e</td><td>Livello 1</td><td>Rame a 100 Mbps / 1 Gbps, lunghezza massima 100 m; usato per PC–switch e uplink</td></tr>
+      <tr><td>Fibra ottica</td><td>Livello 1</td><td>Alta velocità (1 Gbps o più), lunghe distanze, immune alle interferenze; usata per dorsali MAN/WAN</td></tr>
+      <tr><td>Cavo console RS-232 / USB</td><td>Livello 1</td><td>Configurazione locale del router (9600 8N1)</td></tr>
+      <tr><td>Link seriale / cloud</td><td>Livello 1–2</td><td>Collegamenti WAN tra router e verso Internet</td></tr>
+    </tbody>
+  </table></div>
+  <p>In una progettazione corretta: ogni LAN ha uno switch a cui si collegano gli host; il router ha un'interfaccia per LAN (il gateway) e interfacce seriali per le WAN; la fibra collega sedi distanti, il rame resta all'interno dei locali.</p>
+</section>
+
+<section id="quiz">
+  <span class="tag blue">Autoverifica</span>
+  <h2>Quiz di ripasso</h2>
+  <p class="lead">Trentadue domande a risposta multipla su subnetting, Packet Tracer, password CLI, server DNS e routing statico. Dopo ogni risposta compare la spiegazione: se sbagli, torna pure alla sezione corrispondente.</p>
+  <div class="card quiz-box">
+    <div class="quiz-head"><span id="qCount">Domanda 1 di 32</span><span id="qScore">Punteggio: 0</span></div>
+    <p class="quiz-q" id="qText"></p>
+    <div id="qOptions"></div>
+    <div class="feedback" id="qFeedback"></div>
+    <button class="btn primary" id="qNext" type="button" style="display:none">Domanda successiva</button>
+  </div>
+</section>
+
+<section id="scheda">
+  <span class="tag">Riepilogo</span>
+  <h2>Scheda finale da portare a casa</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Formule subnetting</h3>
+      <p><code>Sottoreti = 2^s</code><br><code>Host = 2^h − 2</code><br><code>Salto = 256 − maschera ultimo ottetto</code><br><code>Network = IP AND Maschera</code><br><code>Broadcast = Network OR NOT(maschera)</code></p>
+    </div>
+    <div class="card">
+      <h3>Maschere /24 → /30</h3>
+      <p><code>/24 255.255.255.0</code> → 254 host<br><code>/25 …128</code> → 126<br><code>/26 …192</code> → 62<br><code>/27 …224</code> → 30<br><code>/28 …240</code> → 14<br><code>/29 …248</code> → 6<br><code>/30 …252</code> → 2</p>
+    </div>
+    <div class="card">
+      <h3>Routing in 6 frasi</h3>
+      <p>1. Il router sceglie il percorso e inoltra il pacchetto. 2. La tabella contiene le rotte. 3. <strong>C</strong> = connessa, <strong>S</strong> = statica. 4. Statico = manuale, non adattivo, non scalabile. 5. Dinamico = automatico, adattivo, usa più banda. 6. Link state = mappa completa (OSPF); distance vector = solo vicini (RIP).</p>
+    </div>
+    <div class="card">
+      <h3>Comandi da sapere</h3>
+      <p><code>enable</code> · <code>configure terminal</code> · <code>interface …</code> · <code>ip address …</code> · <code>no shutdown</code> · <code>enable secret …</code> · <code>line vty 0 4</code> · <code>ip route …</code> · <code>ipv6 route …</code> · <code>show ip route</code> · <code>ping</code> · <code>copy running-config startup-config</code></p>
+    </div>
+    <div class="card">
+      <h3>Indirizzi da ricordare</h3>
+      <p><code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code> = privati<br><code>127.0.0.1</code> = loopback<br><code>169.254.x.x</code> = autoconfigurazione<br><code>255.255.255.255</code> = limited broadcast</p>
+    </div>
+    <div class="card">
+      <h3>Metodo per gli esercizi</h3>
+      <p>1. Scrivi la maschera in binario e conti gli 1 → prefisso. 2. Calcola il salto. 3. Elenca gli inizi dei blocchi. 4. Per ogni blocco: rete = primo indirizzo, broadcast = ultimo, host = quelli in mezzo. 5. Assegna gateway e server seguendo le convenzioni.</p>
+    </div>
+  </div>
+</section>
+</main>
+</div>
+
+<footer><div class="wrap">
+  <span>Sistemi e Reti — guida alla verifica · elaborata dai materiali della cartella</span>
+  <span>Suggerimento: usa «Stampa / PDF» per salvare una copia offline.</span>
+</div></footer>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    progress.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    var active = 0;
+    sections.forEach(function (s, i) { if (s && s.getBoundingClientRect().top < 180) active = i; });
+    if (max > 0 && h.scrollTop >= max - 4) active = links.length - 1;
+    links.forEach(function (a, i) { a.classList.toggle('active', i === active); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('load', onScroll);
+  window.addEventListener('hashchange', function () { setTimeout(onScroll, 350); });
+  links.forEach(function (a) {
+    a.addEventListener('click', function () {
+      links.forEach(function (other) { other.classList.remove('active'); });
+      a.classList.add('active');
+    });
+  });
+  setTimeout(onScroll, 600);
+  onScroll();
+
+  document.getElementById('search').addEventListener('input', function (e) {
+    var q = e.target.value.trim().toLowerCase();
+    links.forEach(function (a) { a.style.display = a.textContent.toLowerCase().indexOf(q) >= 0 ? '' : 'none'; });
+  });
+
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  var expandBtn = document.getElementById('expandAll');
+  expandBtn.addEventListener('click', function () {
+    var open = details.some(function (d) { return !d.open; });
+    details.forEach(function (d) { d.open = open; });
+    expandBtn.textContent = open ? 'Chiudi soluzioni' : 'Apri soluzioni';
+  });
+
+  function ipToInt(ip) {
+    var p = ip.trim().split('.');
+    if (p.length !== 4) return null;
+    var n = 0;
+    for (var i = 0; i < 4; i++) {
+      if (!/^\d{1,3}$/.test(p[i])) return null;
+      var v = parseInt(p[i], 10);
+      if (v < 0 || v > 255) return null;
+      n = (n + v * Math.pow(256, 3 - i)) >>> 0;
+    }
+    return n;
+  }
+  function intToIp(n) {
+    return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+  }
+  function prefixFromMask(m) {
+    var v = ipToInt(m);
+    if (v === null) return null;
+    var inv = (~v) >>> 0;
+    if (((inv + 1) & inv) !== 0) return null;
+    var p = 0, x = v;
+    while (x) { p += x & 1; x = x >>> 1; }
+    return p;
+  }
+  function binary(n) {
+    var s = (n >>> 0).toString(2);
+    while (s.length < 32) s = '0' + s;
+    return s.replace(/(.{8})/g, '$1 ').trim();
+  }
+
+  var ipInput = document.getElementById('ipInput');
+  var maskInput = document.getElementById('maskInput');
+  var err = document.getElementById('calcErr');
+  var out = document.getElementById('calcResult');
+
+  function calculate() {
+    var ip = ipToInt(ipInput.value);
+    var prefix;
+    var maskText = maskInput.value.trim();
+    if (/^\/\d{1,2}$/.test(maskText)) prefix = parseInt(maskText.slice(1), 10);
+    else prefix = prefixFromMask(maskText);
+    if (ip === null) { err.textContent = 'Inserisci un indirizzo IPv4 valido (es. 192.168.10.75).'; return; }
+    if (prefix === null || prefix < 0 || prefix > 32) { err.textContent = 'Inserisci un prefisso /0–/32 o una maschera valida.'; return; }
+    err.textContent = '';
+    var hostBits = 32 - prefix;
+    var mask = prefix === 0 ? 0 : (((0xffffffff << (32 - prefix)) >>> 0));
+    var network = (ip & mask) >>> 0;
+    var broadcast = (network | ((~mask) >>> 0)) >>> 0;
+    var first = prefix === 31 ? network : (network + 1) >>> 0;
+    var last = prefix === 31 ? broadcast : (broadcast - 1) >>> 0;
+    var total = Math.pow(2, hostBits);
+    var usable = hostBits < 2 ? (hostBits === 1 ? 2 : 1) : total - 2;
+    var firstOctet = (ip >>> 24) & 255;
+    var cls = firstOctet < 128 ? 'A' : firstOctet < 192 ? 'B' : firstOctet < 224 ? 'C' : firstOctet < 240 ? 'D (multicast)' : 'E (riservata)';
+    function row(k, v) { return '<div class="row"><span>' + k + '</span><b>' + v + '</b></div>'; }
+    out.innerHTML =
+      row('Rete', intToIp(network) + '/' + prefix) +
+      row('Maschera', intToIp(mask)) +
+      row('Wildcard', intToIp((~mask) >>> 0)) +
+      row('Primo host', intToIp(first)) +
+      row('Ultimo host', intToIp(last)) +
+      row('Broadcast', intToIp(broadcast)) +
+      row('Indirizzi blocco', total.toLocaleString('it-IT')) +
+      row('Host utilizzabili', usable.toLocaleString('it-IT')) +
+      row('Classe', cls) +
+      row('IP binario', binary(ip)) +
+      row('Maschera binaria', binary(mask));
+  }
+  document.getElementById('calcBtn').addEventListener('click', calculate);
+  ipInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') calculate(); });
+  maskInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') calculate(); });
+  calculate();
+
+  var quiz = [
+    { q: 'A cosa corrisponde la maschera /26?', o: ['255.255.255.128', '255.255.255.192', '255.255.255.224', '255.255.255.240'], a: 1, e: '/26 = 26 bit a 1: 255.255.255.192, 64 indirizzi di cui 62 utilizzabili.' },
+    { q: 'Quanti host utilizzabili offre una sottorete /27?', o: ['62', '30', '14', '126'], a: 1, e: 'Con /27 restano 5 bit host: 2⁵ − 2 = 30 host utilizzabili.' },
+    { q: 'Qual è l’indirizzo di rete di 175.10.12.14 con maschera 255.255.255.0?', o: ['175.10.0.0', '175.0.0.0', '175.10.12.0', '175.10.12.255'], a: 2, e: 'L’AND con 255.255.255.0 azzera l’ultimo ottetto: 175.10.12.0.' },
+    { q: 'Quale indirizzo è privato secondo RFC 1918?', o: ['8.8.8.8', '172.16.5.4', '200.69.96.0', '224.0.0.1'], a: 1, e: 'Il blocco privato di classe B va da 172.16.0.0 a 172.31.255.255.' },
+    { q: 'Qual è il broadcast di 192.168.1.0/25?', o: ['192.168.1.63', '192.168.1.127', '192.168.1.255', '192.168.0.255'], a: 1, e: '/25 ha salto 128: il primo blocco va da .0 a .127, quindi broadcast .127.' },
+    { q: 'Come si comporta il routing statico di fronte a un guasto?', o: ['Aggiorna da solo la tabella', 'Non reagisce: serve l’amministratore', 'Cambia next hop in automatico', 'Usa solo BGP'], a: 1, e: 'È non adattivo: le route restano invariate finché non vengono modificate a mano.' },
+    { q: 'Quale protocollo IGP usa il distance vector?', o: ['RIP', 'OSPF', 'IS-IS', 'BGP'], a: 0, e: 'RIP è distance vector e usa Bellman-Ford; OSPF e IS-IS sono link state.' },
+    { q: 'Quale comando cifra la password di modalità privilegiata?', o: ['enable password', 'enable secret', 'line con 0', 'no shutdown'], a: 1, e: 'enable secret memorizza la password cifrata; enable password la salva in chiaro.' },
+    { q: 'Quale comando salva la configurazione nella NVRAM?', o: ['show running-config', 'copy startup-config running-config', 'copy running-config startup-config', 'erase startup-config'], a: 2, e: 'copy running-config startup-config rende permanente la configurazione.' },
+    { q: 'Cosa rappresenta la route 0.0.0.0/0?', o: ['Il loopback', 'La default route', 'Il broadcast', 'Una route connected'], a: 1, e: 'È la route predefinita: viene usata per qualsiasi destinazione non presente in tabella.' },
+    { q: 'A cosa serve un server DNS?', o: ['Traduce i nomi in indirizzi IP', 'Assegna indirizzi IP dinamici', 'Instrada i pacchetti tra reti', 'Cifra le password'], a: 0, e: 'Il DNS risolve nomi simbolici come www.azienda.local negli indirizzi IP della rete.' },
+    { q: 'In Packet Tracer, dove si attiva il servizio DNS su un Server-PT?', o: ['Config → Interface', 'Services → DNS', 'CLI → enable', 'Desktop → Terminal'], a: 1, e: 'Si apre la scheda Services, si seleziona DNS, si attiva il servizio e si inseriscono i record nome–IP.' },
+    { q: 'Quale comando verifica la risoluzione di un nome?', o: ['show ip route', 'nslookup', 'no shutdown', 'erase startup-config'], a: 1, e: 'nslookup interroga il DNS e restituisce l’indirizzo IP associato al nome.' },
+    { q: 'Dove si indica l’indirizzo del server DNS su un PC in Packet Tracer?', o: ['Nel campo DNS Server della configurazione IP', 'Nella tabella di routing', 'Nel banner del router', 'Nella maschera di sottorete'], a: 0, e: 'Nella scheda IP Configuration del PC si inserisce l’IP del server DNS, oppure lo si riceve via DHCP.' },
+    { q: 'Quale dispositivo collega più host appartenenti alla stessa LAN?', o: ['Router', 'Switch', 'Access Point', 'Cavo console'], a: 1, e: 'Lo switch espande le porte della LAN e inoltra i frame in base agli indirizzi MAC.' },
+    { q: 'Quale comando Cisco attiva un’interfaccia disattivata?', o: ['no shutdown', 'shutdown', 'enable secret', 'copy running-config'], a: 0, e: 'no shutdown accende la porta: senza questo comando l’interfaccia resta down e il LED rosso.' },
+    { q: 'Per configurare la password dell’accesso remoto Telnet si usa...', o: ['line con 0', 'line vty 0 4', 'interface fa0/0', 'ip route'], a: 1, e: 'line vty 0 4 configura le linee virtuali di terminale usate da Telnet e SSH.' },
+    { q: 'Dove si configura la password di accesso alla console?', o: ['line con 0', 'line vty 0 4', 'interface g0/0', 'ip route'], a: 0, e: 'line console 0 protegge l’accesso fisico tramite cavo console; poi si usano password e login.' },
+    { q: 'Quale codice compare in show ip route per una rotta statica?', o: ['C', 'S', 'R', 'O'], a: 1, e: 'S sta per Static: la rotta è stata inserita manualmente dall’amministratore.' },
+    { q: 'Quale codice indica una rete direttamente connessa al router?', o: ['C', 'S', 'O', 'B'], a: 0, e: 'C sta per Connected: il router ha un’interfaccia nella rete e la raggiunge senza next hop.' },
+    { q: 'Cosa indica il next hop in una route statica?', o: ['L’indirizzo del router successivo', 'L’indirizzo del PC destinatario', 'La maschera della rete', 'Il numero di porta dello switch'], a: 0, e: 'Il next hop è il router intermedio al quale va consegnato il pacchetto per raggiungere la rete remota.' },
+    { q: 'Perché una route statica non è scalabile?', o: ['Richiede aggiornamenti manuali al variare della topologia', 'Usa troppa banda', 'Non supporta IPv6', 'Funziona solo con i wireless'], a: 0, e: 'Ogni cambiamento di rete va gestito a mano: per questo il routing statico è adatto a reti piccole.' },
+    { q: 'Quante sottoreti /26 si ottengono da una rete /24?', o: ['2', '4', '8', '16'], a: 1, e: 'Si prendono 2 bit aggiuntivi: 2² = 4 sottoreti, ognuna con 64 indirizzi e 62 host.' },
+    { q: 'Qual è il range degli host di 192.168.0.64/26?', o: ['.65 – .126', '.64 – .127', '.129 – .190', '.1 – .62'], a: 0, e: 'Il blocco /64 parte da .64 (rete) e finisce a .127 (broadcast): gli host sono .65–.126.' },
+    { q: 'Quale maschera permette esattamente 14 host utilizzabili?', o: ['/27', '/28', '/29', '/30'], a: 1, e: '/28 lascia 4 bit host: 2⁴ − 2 = 14 indirizzi assegnabili.' },
+    { q: 'Qual è il broadcast di 200.69.96.192/26?', o: ['200.69.96.223', '200.69.96.255', '200.69.96.191', '200.69.96.127'], a: 1, e: 'Il blocco /26 che inizia a .192 termina a .255, che è l’indirizzo broadcast.' },
+    { q: 'Quante sottoreti /30 si possono ricavare da un /24?', o: ['32', '64', '128', '16'], a: 1, e: 'Da /24 a /30 si prendono 6 bit: 2⁶ = 64 sottoreti, ideali per link punto-punto.' },
+    { q: 'Per collegare smartphone e laptop in Wi-Fi serve...', o: ['Un Access Point', 'Un hub', 'Una stampante', 'Un cavo console'], a: 0, e: 'L’Access Point collega i dispositivi radio alla LAN cablata tramite SSID e chiave WPA2.' },
+    { q: 'Cosa succede se un host non ha il default gateway?', o: ['Comunica solo nella propria sottorete', 'Non riesce a pingare nemmeno in LAN', 'Ottiene un IP pubblico', 'Si collega automaticamente al DNS'], a: 0, e: 'Senza gateway la consegna indiretta non è possibile: restano raggiungibili solo gli host della stessa subnet.' },
+    { q: 'Quale protocollo di routing è di tipo link state?', o: ['RIP', 'OSPF', 'IGRP', 'EGP'], a: 1, e: 'OSPF è link state: ogni router ha la mappa completa e calcola i cammini minimi.' },
+    { q: 'In una rete con due router, chi deve avere la route statica verso una rete remota?', o: ['Il router che non è collegato direttamente a quella rete', 'Entrambi i router', 'Solo gli host', 'Nessuno: basta il DNS'], a: 0, e: 'Ogni router conosce le reti connected; aggiunge una route statica solo per le reti che non raggiunge direttamente.' },
+    { q: 'Cosa verifica il comando ping?', o: ['La raggiungibilità di un indirizzo', 'La cifratura della password', 'Il numero di host in una subnet', 'La configurazione del DNS'], a: 0, e: 'ping invia echo request ICMP e mostra le risposte: conferma che la destinazione è raggiungibile.' }
+  ];
+  var idx = 0, score = 0, answered = false, finished = false;
+  var qText = document.getElementById('qText');
+  var qOptions = document.getElementById('qOptions');
+  var qFeedback = document.getElementById('qFeedback');
+  var qNext = document.getElementById('qNext');
+  var qCount = document.getElementById('qCount');
+  var qScore = document.getElementById('qScore');
+
+  function renderQuestion() {
+    answered = false;
+    finished = false;
+    qCount.textContent = 'Domanda ' + (idx + 1) + ' di ' + quiz.length;
+    qScore.textContent = 'Punteggio: ' + score;
+    qText.textContent = quiz[idx].q;
+    qFeedback.textContent = '';
+    qNext.style.display = 'none';
+    qOptions.innerHTML = '';
+    quiz[idx].o.forEach(function (text, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'opt';
+      b.textContent = String.fromCharCode(65 + i) + ') ' + text;
+      b.addEventListener('click', function () {
+        if (answered) return;
+        answered = true;
+        var correct = i === quiz[idx].a;
+        if (correct) score++;
+        Array.prototype.forEach.call(qOptions.children, function (child, j) {
+          child.disabled = true;
+          if (j === quiz[idx].a) child.classList.add('correct');
+          else if (j === i) child.classList.add('wrong');
+        });
+        qFeedback.textContent = (correct ? 'Corretto! ' : 'Non esatto. ') + quiz[idx].e;
+        qFeedback.style.color = correct ? '#15803d' : '#b91c1c';
+        qScore.textContent = 'Punteggio: ' + score;
+        qNext.style.display = 'inline-flex';
+        qNext.textContent = idx === quiz.length - 1 ? 'Mostra risultato' : 'Domanda successiva';
+      });
+      qOptions.appendChild(b);
+    });
+  }
+  qNext.addEventListener('click', function () {
+    if (finished) { idx = 0; score = 0; renderQuestion(); return; }
+    if (idx < quiz.length - 1) { idx++; renderQuestion(); return; }
+    finished = true;
+    qCount.textContent = 'Fine';
+    qText.textContent = 'Hai totalizzato ' + score + ' risposte corrette su ' + quiz.length + '.';
+    qOptions.innerHTML = '';
+    qFeedback.textContent = score >= 8 ? 'Ottimo: sei pronto per la verifica!' : score >= 5 ? 'Buona base: ripassa le sezioni sbagliate e riprova.' : 'Rileggi la guida dall’inizio: la pratica con gli esercizi aiuta moltissimo.';
+    qFeedback.style.color = '#0f766e';
+    qNext.textContent = 'Ricomincia';
+  });
+  renderQuestion();
+})();
+</script>
+</body>
+</html>
